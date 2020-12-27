@@ -3,3 +3,6 @@
 # Webdriver
 headless        = True
 scrape_website  = 'https://www.nike.com/'
+
+# Webhook
+webhook_url     = ''

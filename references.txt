@@ -8,3 +8,9 @@ Selenium & Webdriver
 
 https://medium.com/@romik.kelesh/how-to-deploy-a-python-web-scraper-with-selenium-on-heroku-1459cb3ac76c
 https://pythonspot.com/selenium-get-source/
+https://www.selenium.dev/docs/site/en/webdriver/waits/#:~:text=An%20implicit%20wait%20is%20to,the%20life%20of%20the%20session
+
+
+Beautiful Soup
+
+https://stackoverflow.com/questions/13960326/how-can-i-parse-a-website-using-selenium-and-beautifulsoup-in-python

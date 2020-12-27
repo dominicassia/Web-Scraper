@@ -15,10 +15,11 @@ import json
 import datetime
 
 import requests
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from config import headless, scrape_website
+from config import headless, scrape_website, webhook_url
 
 # ----
 
@@ -57,10 +58,58 @@ def get_source(driver):
     return web_element.page_source
 
 
-def parse():
+def parse(page_source):
     ''' Utilizes bs4 to parse page source. Returns source's title. '''
 
+    soup = BeautifulSoup(page_source)
 
+    title = soup.find('title')
+
+    return title
+
+
+def save_json(title):
+    ''' Saves the title to a json file. Returns nothing. '''
+
+    file_location = 'data.json'
+
+    try:
+
+        with open(file_location, 'r') as fr:
+
+            data = json.load(fr)
+
+            data[ str(datetime.datetime.now()) ] = title
+
+            with open(file_location, 'w') as fw:
+
+                json.dump(data, fw)
+     
+
+    except FileNotFoundError:
+
+        with open(file_location, 'w') as fw:
+
+            dictionary = {}
+
+            dictionary[ str(datetime.datetime.now()) ] = title
+
+            json.dump(dictionary, fw)
+
+
+def send_webhook(title):
+    ''' Utilizes requests to send webhook. Returns nothing. '''
+
+    data = {
+        'username'  : 'simple-heroku-app',
+        'content'   : f'[{datetime.datetime.now()}] - {title}'
+    }
+
+    requests.post(
+        webhook_url, 
+        data        = json.dumps(data), 
+        headers     = {'Content-Type': 'application/json'}
+    )
 
 
 def main():
@@ -71,6 +120,9 @@ def main():
 
     title = parse(page_source)
 
+    save_json(title)
+
+    send_webhook(title)
 
 # ----
 
