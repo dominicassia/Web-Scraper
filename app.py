@@ -73,7 +73,7 @@ def parse(page_source):
 def save_json(title):
     ''' Saves the title to a json file. Returns nothing. '''
 
-    file_location = 'data.json'
+    file_location = './data.json'
 
     try:
 
