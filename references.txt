@@ -1,0 +1,10 @@
+Heroku
+
+https://devcenter.heroku.com/articles/getting-started-with-python?singlepage=true#introduction
+https://devcenter.heroku.com/articles/procfile
+
+
+Selenium & Webdriver
+
+https://medium.com/@romik.kelesh/how-to-deploy-a-python-web-scraper-with-selenium-on-heroku-1459cb3ac76c
+https://pythonspot.com/selenium-get-source/
