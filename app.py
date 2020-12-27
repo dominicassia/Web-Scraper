@@ -122,7 +122,7 @@ def main():
 
     title = parse(page_source)
 
-    save_json(title)
+    # save_json(title)
 
     send_webhook(title)
 
