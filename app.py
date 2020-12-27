@@ -63,7 +63,7 @@ def get_source(driver):
 def parse(page_source):
     ''' Utilizes bs4 to parse page source. Returns source's title. '''
 
-    soup = BeautifulSoup(page_source)
+    soup = BeautifulSoup(page_source, 'html.parser')
 
     title = soup.find('title')
 

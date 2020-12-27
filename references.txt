@@ -16,3 +16,4 @@ https://www.selenium.dev/docs/site/en/webdriver/waits/#:~:text=An%20implicit%20w
 Beautiful Soup
 
 https://stackoverflow.com/questions/13960326/how-can-i-parse-a-website-using-selenium-and-beautifulsoup-in-python 
+https://www.crummy.com/software/BeautifulSoup/bs4/doc/
