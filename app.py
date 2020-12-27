@@ -132,4 +132,4 @@ if __name__ == "__main__":
     # Repeat this process every day
     while True:
         main()
-        time.sleep(100)
+        time.sleep(86400)
