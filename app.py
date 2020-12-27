@@ -41,7 +41,7 @@ def get_driver():
 
         chrome_options.add_argument('start-maximized')
 
-    driver = webdriver.Chrome(chrome_options=chrome_options, executable_path=os.environ.get("CHROMEDRIVER_PATH"))
+    driver = webdriver.Chrome(options=chrome_options, executable_path=os.environ.get("CHROMEDRIVER_PATH"))
 
     return driver
 
@@ -51,11 +51,13 @@ def get_source(driver):
 
     driver.implicitly_wait(5)
 
-    web_element = driver.get(scrape_website)
+    driver.get(scrape_website)
+
+    page_source = driver.page_source
 
     driver.quit()
 
-    return web_element.page_source
+    return page_source
 
 
 def parse(page_source):
