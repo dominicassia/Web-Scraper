@@ -2,6 +2,8 @@ Heroku
 
 https://devcenter.heroku.com/articles/getting-started-with-python?singlepage=true#introduction
 https://devcenter.heroku.com/articles/procfile
+https://devcenter.heroku.com/articles/dynos
+https://help.heroku.com/W23OAFGK/why-am-i-seeing-couldn-t-find-that-process-type-when-trying-to-scale-dynos
 
 
 Selenium & Webdriver
