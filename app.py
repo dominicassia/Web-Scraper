@@ -19,7 +19,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from config import headless, scrape_website, webhook_url
+from config import headless, scrape_website, webhook_url, json_file_path
 
 # ----
 
@@ -73,24 +73,22 @@ def parse(page_source):
 def save_json(title):
     ''' Saves the title to a json file. Returns nothing. '''
 
-    file_location = './data.json'
-
     try:
 
-        with open(file_location, 'r') as fr:
+        with open(json_file_path, 'r') as fr:
 
             data = json.load(fr)
 
             data[ str(datetime.datetime.now()) ] = title
 
-            with open(file_location, 'w') as fw:
+            with open(json_file_path, 'w') as fw:
 
                 json.dump(data, fw)
      
 
     except FileNotFoundError:
 
-        with open(file_location, 'w') as fw:
+        with open(json_file_path, 'w') as fw:
 
             dictionary = {}
 
@@ -122,7 +120,7 @@ def main():
 
     title = parse(page_source)
 
-    # save_json(title)
+    save_json(title)
 
     send_webhook(title)
 
