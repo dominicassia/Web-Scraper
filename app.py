@@ -133,6 +133,7 @@ if __name__ == "__main__":
     p2 = multiprocessing.Process(name='p2', target=activate)
 
     endTime = datetime.datetime.now() + datetime.timedelta(minutes=3600)
+    p1.start()
 
     # Repeat this process every day
     while True:
