@@ -13,12 +13,14 @@ import os
 import time
 import json
 import datetime
+import multiprocessing
 
 import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+from bot import activate
 from config import headless, scrape_website, webhook_url, json_file_path
 
 # ----
@@ -127,7 +129,18 @@ def main():
 # ----
 
 if __name__ == "__main__":
+    p1 = multiprocessing.Process(name='p1', target=main)
+    p2 = multiprocessing.Process(name='p2', target=activate)
+
+    endTime = datetime.datetime.now() + datetime.timedelta(minutes=3600)
+
     # Repeat this process every day
     while True:
-        main()
-        time.sleep(86400)
+
+        if datetime.datetime.now() >= endTime:
+            p1.start()
+            endTime = datetime.datetime.now() + datetime.timedelta(minutes=3600)
+
+        else:
+            p2.start()
+            time.sleep(86400)

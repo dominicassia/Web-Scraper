@@ -29,5 +29,5 @@ async def on_member_join(member):
 async def view(ctx, *, file_path):
     await ctx.send(file=discord.File(file_path))
 
-
-client.run(os.environ.get('bot_token'))
+def activate():
+    client.run(os.environ.get('bot_token'))
