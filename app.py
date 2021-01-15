@@ -132,7 +132,6 @@ def main():
 if __name__ == "__main__":
 
     import time
-    import datetime
     import multiprocessing
 
     from bot import activate
