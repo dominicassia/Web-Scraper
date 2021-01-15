@@ -20,14 +20,13 @@ async def on_ready():
     print('Bot is ready.')
 
 
-@client.event
-async def on_member_join(member):
-    print(f'Welcome to the server {member}!')
-
-
 @client.command()
 async def view(ctx, *, file_path):
-    await ctx.send(file=discord.File(file_path))
+    try:
+        await ctx.send(file=discord.File(file_path))
+    except Exception:
+        pass
+
 
 def activate():
     client.run(os.environ.get('bot_token'))

@@ -7,26 +7,15 @@
     using beautiful soup to parse the html; extracting the title.  
 '''
 
-# -- Imports
-
-import os
-import time
-import json
-import datetime
-import multiprocessing
-
-import requests
-from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-
-from bot import activate
-from config import headless, scrape_website, webhook_url, json_file_path
-
-# ----
-
 def get_driver():
     ''' Returns a webdriver. Headless as specified in config variable. '''
+
+    import os
+
+    from selenium import webdriver
+    from selenium.webdriver.chrome.options import Options
+
+    from config import headless
 
     chrome_options = Options()
 
@@ -51,6 +40,8 @@ def get_driver():
 def get_source(driver):
     ''' Returns the page source. Website as specified in config variable. '''
 
+    from config import scrape_website
+
     driver.implicitly_wait(5)
 
     driver.get(scrape_website)
@@ -65,6 +56,8 @@ def get_source(driver):
 def parse(page_source):
     ''' Utilizes bs4 to parse page source. Returns source's title. '''
 
+    from bs4 import BeautifulSoup
+
     soup = BeautifulSoup(page_source, 'html.parser')
 
     title = soup.find('title')
@@ -74,6 +67,10 @@ def parse(page_source):
 
 def save_json(title):
     ''' Saves the title to a json file. Returns nothing. '''
+
+    import json
+
+    from config import json_file_path
 
     try:
 
@@ -102,6 +99,10 @@ def save_json(title):
 def send_webhook(title):
     ''' Utilizes requests to send webhook. Returns nothing. '''
 
+    import requests
+
+    from config import webhook_url
+
     data = {
         'username'  : 'simple-heroku-app',
         'content'   : f'[{datetime.datetime.now()}] - {title}'
@@ -129,19 +130,20 @@ def main():
 # ----
 
 if __name__ == "__main__":
+
+    import time
+    import datetime
+    import multiprocessing
+
+    from bot import activate
+
     p1 = multiprocessing.Process(name='p1', target=main)
     p2 = multiprocessing.Process(name='p2', target=activate)
 
-    endTime = datetime.datetime.now() + datetime.timedelta(minutes=3600)
-    p1.start()
+    p2.start()
 
     # Repeat this process every day
     while True:
 
-        if datetime.datetime.now() >= endTime:
-            p1.start()
-            endTime = datetime.datetime.now() + datetime.timedelta(minutes=3600)
-
-        else:
-            p2.start()
-            time.sleep(86400)
+        p1.start()
+        time.sleep(86400)
