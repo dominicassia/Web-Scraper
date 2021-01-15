@@ -69,7 +69,8 @@ def save_json(title):
     ''' Saves the title to a json file. Returns nothing. '''
 
     import json
-
+    import datetime
+    
     from config import json_file_path
 
     try:
