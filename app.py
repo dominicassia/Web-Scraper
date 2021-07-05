@@ -100,6 +100,7 @@ def save_json(title):
 def send_webhook(title):
     ''' Utilizes requests to send webhook. Returns nothing. '''
 
+    import json
     import requests
     from datetime import datetime
     from config import webhook_url
