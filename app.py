@@ -101,7 +101,7 @@ def send_webhook(title):
     ''' Utilizes requests to send webhook. Returns nothing. '''
 
     import requests
-
+    from datetime import datetime
     from config import webhook_url
 
     data = {
