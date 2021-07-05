@@ -77,7 +77,7 @@ def save_json(title):
 
         with open(json_file_path, 'r+') as fr:
 
-            data = json.load(fr)
+            data = dict(json.load(fr))
 
             data[ str(datetime.datetime.now()) ] = title
 
