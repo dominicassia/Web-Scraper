@@ -106,7 +106,7 @@ def send_webhook(title):
 
     data = {
         'username'  : 'simple-heroku-app',
-        'content'   : f'[{datetime.datetime.now()}] - {title}'
+        'content'   : f'[ {str(datetime.now())} ] - {title}'
     }
 
     requests.post(
