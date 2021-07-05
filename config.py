@@ -1,7 +1,7 @@
 ''' Various app configuration variables. '''
 
 # Json
-json_file_path = 'data.json'
+json_file_path = './data.json'
 
 # Webdriver
 headless        = True
