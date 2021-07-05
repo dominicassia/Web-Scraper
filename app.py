@@ -79,7 +79,7 @@ def save_json(title):
 
             data = dict(json.load(fr))
 
-            data[ str(datetime.datetime.now()) ] = title
+            data[ str(datetime.datetime.now()) ] = str(title)
 
             with open(json_file_path, 'w') as fw:
 
