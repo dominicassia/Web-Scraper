@@ -75,7 +75,7 @@ def save_json(title):
 
     try:
 
-        with open(json_file_path, 'r') as fr:
+        with open(json_file_path, 'r+') as fr:
 
             data = json.load(fr)
 
@@ -88,7 +88,7 @@ def save_json(title):
 
     except FileNotFoundError:
 
-        with open(json_file_path, 'w') as fw:
+        with open(json_file_path, 'r+') as fw:
 
             dictionary = {}
 
