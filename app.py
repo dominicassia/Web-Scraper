@@ -98,7 +98,7 @@ def main():
         send_webhook(title)
     except Exception as e:
         from config import log_file_path
-        with open(log_file_path) as fw:
+        with open(log_file_path, 'w') as fw:
             fw.write(e)
 
 # ----
