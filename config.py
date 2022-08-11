@@ -1,11 +1,13 @@
 ''' Various app configuration variables. '''
 
-# Json
-json_file_path = './data.json'
+# Json & log
+json_file_path  = './data.json'
+log_file_path   = './log.txt'
 
 # Webdriver
 headless        = True
-scrape_website  = 'https://www.nike.com/'
+scrape_website  = 'https://doma.media'
 
 # Webhook
-webhook_url     = 'https://discord.com/api/webhooks/861597079368892446/Xw6YX_i8fMxzI0zW9qIKn6v7fLMvc2fBOe-4IISRgOoDz9057EvIZnbT0lxopEyiL2N4'
+webhook_url     = 'https://discord.com/api/webhooks/1007263694109036605/rPK6iZOHhlFp78y0NklVVjL9LJpVXABh81ZUtMk8oTkfts2BkZUTPkKvRpyBwzxK_TUx'
+bot_invite_url  = 'https://discord.com/api/oauth2/authorize?client_id=1007265798659788830&permissions=8&scope=bot'
