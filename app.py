@@ -72,10 +72,12 @@ def save_json(title):
 def send_webhook(title):
     ''' Utilizes requests to send webhook. Returns nothing. '''
 
+    import os
     import json
     import requests
     from datetime import datetime
-    from config import webhook_url
+
+    webhook_url = os.environ.get('bot_token')
 
     data = {
         'username'  : 'simple-heroku-app',
