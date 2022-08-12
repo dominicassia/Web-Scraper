@@ -11,7 +11,9 @@ def get_driver():
     ''' Returns a webdriver. Headless as specified in config variable. '''
     import os
     from selenium import webdriver
+    from selenium.webdriver_manager.chrome import ChromeDriverManager
     from selenium.webdriver.chrome.options import Options
+    from selenium.webdriver.chrome.service import Service
     from config import headless
 
     chrome_options = Options()
@@ -25,10 +27,19 @@ def get_driver():
     else:
         chrome_options.add_argument('start-maximized')
 
-    driver = webdriver.Chrome(options=chrome_options, executable_path=os.environ.get("CHROMEDRIVER_PATH"))
+    # driver = webdriver.Chrome(options=chrome_options, executable_path=os.environ.get("CHROMEDRIVER_PATH"))
+    service = Service(executable_path=ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=chrome_options)
+    
     return driver
 
+def get(driver):
+    from selenium.webdriver.common.by import By
 
+    title = driver.find_element(by=By.TAG_NAME, 'title')
+    title.
+
+# Depreciated 
 def get_source(driver):
     ''' Returns the page source. Website as specified in config variable. '''
     from config import scrape_website
@@ -39,7 +50,7 @@ def get_source(driver):
     driver.quit()
     return page_source
 
-
+# Depreciated 
 def parse(page_source):
     ''' Utilizes bs4 to parse page source. Returns source's title. '''
     from bs4 import BeautifulSoup
