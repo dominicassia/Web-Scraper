@@ -6,4 +6,3 @@ log_file_path   = './log.txt'
 
 # Webdriver
 headless        = True
-scrape_website  = 'https://www.intel.com'

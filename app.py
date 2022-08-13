@@ -36,33 +36,39 @@ def get_driver():
     return driver
 
 def get_title(driver):
+    import os
     from selenium.webdriver.common.by import By
 
     print('[INFO] Getting element\n')
+
+    driver.implicitly_wait(5)
+    driver.get(os.environ.get('scrape_website')) 
     element = driver.find_element(By.TAG_NAME, 'title')
     title = element.text
+    driver.quit()
+
     print('[SUCCESS]\n')
     return title
 
 # Depreciated 
-def get_source(driver):
-    ''' Returns the page source. Website as specified in config variable. '''
-    from config import scrape_website
+# def get_source(driver):
+#     ''' Returns the page source. Website as specified in config variable. '''
+#     from config import scrape_website
 
-    driver.implicitly_wait(5)
-    driver.get(scrape_website)
-    page_source = driver.page_source
-    driver.quit()
-    return page_source
+#     driver.implicitly_wait(5)
+#     driver.get(scrape_website)
+#     page_source = driver.page_source
+#     driver.quit()
+#     return page_source
 
 # Depreciated 
-def parse(page_source):
-    ''' Utilizes bs4 to parse page source. Returns source's title. '''
-    from bs4 import BeautifulSoup
+# def parse(page_source):
+#     ''' Utilizes bs4 to parse page source. Returns source's title. '''
+#     from bs4 import BeautifulSoup
 
-    soup = BeautifulSoup(page_source, 'html.parser')
-    title = soup.find('title')
-    return title
+#     soup = BeautifulSoup(page_source, 'html.parser')
+#     title = soup.find('title')
+#     return title
 
 
 def save_json(title):
