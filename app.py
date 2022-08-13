@@ -44,9 +44,9 @@ def get_title(driver):
     driver.implicitly_wait(5)
     driver.get(os.environ.get('scrape_website')) 
     element = driver.find_element(By.TAG_NAME, 'title')
-    print('f[ELEMENT] {element}\n')
+    print(f'[ELEMENT] {element}\n')
     title = element.text
-    print('f[TITLE] {title}\n')
+    print(f'[TITLE] {title}\n')
     driver.quit()
 
     print('[SUCCESS]\n')
