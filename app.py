@@ -33,11 +33,11 @@ def get_driver():
     
     return driver
 
-def get(driver):
+def get_title(driver):
     from selenium.webdriver.common.by import By
 
-    title = driver.find_element(by=By.TAG_NAME, 'title')
-    title.
+    element = driver.find_element(by=By.TAG_NAME, 'title')
+    title = element.text
 
 # Depreciated 
 def get_source(driver):
@@ -105,8 +105,9 @@ def send_webhook(title):
 def main():
     try:
         driver = get_driver()
-        page_source = get_source(driver)
-        title = parse(page_source)
+        title = get_title(driver)
+        # page_source = get_source(driver)
+        # title = parse(page_source)
         save_json(title)
         send_webhook(title)
     except Exception as e:
