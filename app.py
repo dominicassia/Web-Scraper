@@ -36,7 +36,7 @@ def get_driver():
 def get_title(driver):
     from selenium.webdriver.common.by import By
 
-    element = driver.find_element(by=By.TAG_NAME, 'title')
+    element = driver.find_element(By.TAG_NAME, 'title')
     title = element.text
 
 # Depreciated 
