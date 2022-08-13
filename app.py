@@ -11,10 +11,11 @@ def get_driver():
     ''' Returns a webdriver. Headless as specified in config variable. '''
     import os
     from selenium import webdriver
-    from selenium.webdriver_manager.chrome import ChromeDriverManager
     from selenium.webdriver.chrome.options import Options
     from selenium.webdriver.chrome.service import Service
     from config import headless
+
+    print('[INFO] Getting driver\n')
 
     chrome_options = Options()
     chrome_options.add_argument('user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36')
@@ -28,16 +29,20 @@ def get_driver():
         chrome_options.add_argument('start-maximized')
 
     # driver = webdriver.Chrome(options=chrome_options, executable_path=os.environ.get("CHROMEDRIVER_PATH"))
-    service = Service(executable_path=ChromeDriverManager().install())
+    service = Service(executable_path=os.environ.get("CHROMEDRIVER_PATH"))
     driver = webdriver.Chrome(service=service, options=chrome_options)
     
+    print('[SUCCESS]\n')
     return driver
 
 def get_title(driver):
     from selenium.webdriver.common.by import By
 
+    print('[INFO] Getting element\n')
     element = driver.find_element(By.TAG_NAME, 'title')
     title = element.text
+    print('[SUCCESS]\n')
+    return title
 
 # Depreciated 
 def get_source(driver):
@@ -66,18 +71,22 @@ def save_json(title):
     from datetime import datetime
     from config import json_file_path
 
+    print('[INFO] Saving JSON\n')
+
     try:
         with open(json_file_path, 'r+') as fr:
             data = dict(json.load(fr))
             data[ str(datetime.now()) ] = str(title)
             with open(json_file_path, 'w') as fw:
                 json.dump(data, fw)
+                print('[SUCCESS] Appended\n')
 
     except FileNotFoundError:
         with open(json_file_path, 'r+') as fw:
             dictionary = {}
             dictionary[ str(datetime.now()) ] = title
             json.dump(dictionary, fw)
+            print('[SUCCESS] New JSON file created\n')
 
 
 def send_webhook(title):
@@ -88,7 +97,9 @@ def send_webhook(title):
     import requests
     from datetime import datetime
 
-    webhook_url = os.environ.get('bot_token')
+    print('[INFO] Sending webhook\n')
+
+    webhook_url = os.environ.get('webhook_url')
 
     data = {
         'username'  : 'simple-heroku-app',
@@ -101,8 +112,11 @@ def send_webhook(title):
         headers     = {'Content-Type': 'application/json'}
     )
 
+    print('[SUCCESS]\n')
+
 
 def main():
+    print('[INFO] Launching web scraper\n')
     try:
         driver = get_driver()
         title = get_title(driver)
@@ -113,6 +127,7 @@ def main():
     except Exception as e:
         from config import log_file_path
         with open(log_file_path, 'w') as fw:
+            print('[ERROR] Exception written to log\n')
             fw.write(str(e))
 
 # ----
@@ -129,4 +144,5 @@ if __name__ == "__main__":
     # Repeat this process every day
     while True:
         p1.start()
+        print('[INFO] Sleeping\n')
         time.sleep(86400)

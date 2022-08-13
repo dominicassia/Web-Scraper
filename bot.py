@@ -17,14 +17,17 @@ client = commands.Bot(command_prefix='>')
 
 @client.event
 async def on_ready():
-    print('Bot is ready.')
+    print('[INFO] Bot is ready.')
 
 
 @client.command()
 async def view(ctx, *, file_path):
+    print(f'[INFO] View: {file_path}\n')
     try:
         await ctx.send(file=discord.File(file_path))
+        print('[SUCCESS]\n')
     except Exception:
+        print('[Error]\n')
         pass
 
 
