@@ -7,19 +7,24 @@
     using beautiful soup to parse the html; extracting the title.  
 '''
 
+from config import log
+
+
 def get_driver():
-    ''' Returns a webdriver. Headless as specified in config variable. '''
-    import os
+    ''' Returns a webdriver. Headless and chrome bin as specified in config var'''
+
+    # Imports
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
     from selenium.webdriver.chrome.service import Service
-    from config import headless
+    from config import headless, chrome_bin, chrome_path
 
     print('[INFO] Getting driver\n')
 
+    # Chrome webdriver options
     chrome_options = Options()
     chrome_options.add_argument('user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36')
-    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    chrome_options.binary_location = chrome_bin
 
     if headless:
         chrome_options.add_argument('--headless')
@@ -28,8 +33,8 @@ def get_driver():
     else:
         chrome_options.add_argument('start-maximized')
 
-    # driver = webdriver.Chrome(options=chrome_options, executable_path=os.environ.get("CHROMEDRIVER_PATH"))
-    service = Service(executable_path=os.environ.get("CHROMEDRIVER_PATH"))
+    # Create webdriver
+    service = Service(executable_path=chrome_path)
     driver = webdriver.Chrome(service=service, options=chrome_options)
     
     print('[SUCCESS]\n')
@@ -53,24 +58,24 @@ def get_title(driver):
     return title
 
 # Depreciated 
-# def get_source(driver):
-#     ''' Returns the page source. Website as specified in config variable. '''
-#     from config import scrape_website
+def get_source(driver):
+    ''' Returns the page source. Website as specified in config variable. '''
+    from config import scrape_website
 
-#     driver.implicitly_wait(5)
-#     driver.get(scrape_website)
-#     page_source = driver.page_source
-#     driver.quit()
-#     return page_source
+    driver.implicitly_wait(5)
+    driver.get(scrape_website)
+    page_source = driver.page_source
+    driver.quit()
+    return page_source
 
 # Depreciated 
-# def parse(page_source):
-#     ''' Utilizes bs4 to parse page source. Returns source's title. '''
-#     from bs4 import BeautifulSoup
+def parse(page_source):
+    ''' Utilizes bs4 to parse page source. Returns source's title. '''
+    from bs4 import BeautifulSoup
 
-#     soup = BeautifulSoup(page_source, 'html.parser')
-#     title = soup.find('title')
-#     return title
+    soup = BeautifulSoup(page_source, 'html.parser')
+    title = soup.find('title')
+    return title
 
 
 def save_json(title):
@@ -141,8 +146,8 @@ def main():
 # ----
 
 if __name__ == "__main__":
-    import time
-    import multiprocessing
+    import time, multiprocessing
+    from config import *
     from bot import activate
 
     p1 = multiprocessing.Process(name='p1', target=main)
@@ -153,4 +158,4 @@ if __name__ == "__main__":
     while True:
         p1.start()
         print('[INFO] Sleeping\n')
-        time.sleep(86400)
+        time.sleep(60*60)
