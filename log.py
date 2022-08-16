@@ -6,7 +6,7 @@ class Log():
     def __init__(self, log_fp, log_webhook):
 
         self.log_fp = log_fp
-        self.log_webhook = log_webhook
+        self.webhook_url = log_webhook
 
         # Attempt to open log file
         try:
