@@ -36,7 +36,7 @@ class Log():
 
         # Send webhook
         data = {
-            'username'  : 'Log Bot',
+            'username'  : 'Logger',
             'content'   : log_msg
         }
 

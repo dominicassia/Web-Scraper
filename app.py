@@ -7,9 +7,6 @@
     using beautiful soup to parse the html; extracting the title.  
 '''
 
-from config import log
-
-
 def get_driver():
     ''' Returns a webdriver. Headless and chrome bin as specified in config var'''
 
@@ -115,7 +112,7 @@ def send_webhook(title):
     webhook_url = os.environ.get('webhook_url')
 
     data = {
-        'username'  : 'simple-heroku-app',
+        'username'  : 'Web Scraper',
         'content'   : f'[ {str(datetime.now())} ] - {title}'
     }
 
@@ -129,6 +126,7 @@ def send_webhook(title):
 
 
 def main():
+    log.log('info', 'testing logger')
     print('[INFO] Launching web scraper\n')
     try:
         driver = get_driver()
