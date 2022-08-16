@@ -1,10 +1,13 @@
-import datetime
+import datetime, requests, json
 
 class Log():
     ''' Writes to log file, prints to screen, and optionally sends webhook. '''
 
-    def __init__(log_fp, log_webhook):
-        
+    def __init__(self, log_fp, log_webhook):
+
+        self.log_fp = log_fp
+        self.log_webhook = log_webhook
+
         # Attempt to open log file
         try:
             with open(log_fp, 'r') as f:
@@ -13,27 +16,32 @@ class Log():
         # Create the log file
         except FileNotFoundError:
             with open(log_fp, 'w') as f:
-                log('info', 'Log file created')
+                self.log('info', 'Log file created')
 
-    def log(type, msg):
-        '''  '''
+    def log(self, type, msg):
+        ''' Write, print, send log message '''
 
         # Get timestamp
         timestamp = datetime.datetime.now()
 
-        # 
+        # Create string
+        log_msg = f'[{type.upper()}, {timestamp}] - {msg}\n'
 
+        # Write to log
+        with open(self.log_fp, 'r+') as f:
+            f.write(log_msg)
 
+        # Print to screen
+        print(log_msg)
 
+        # Send webhook
+        data = {
+            'username'  : 'Log Bot',
+            'content'   : log_msg
+        }
 
-
-
-def log(type, text):
-    ''' Logs to txt file. '''
-
-    now = datetime.datetime.now()
-    print(f'{now}: {text}')
-
-    if log_to_file:
-        with open('src/'+log_path if local_dev else log_path, 'a') as file:
-            file.write(f'{now}: {text}\n')
+        requests.post(
+            self.webhook_url, 
+            data        = json.dumps(data), 
+            headers     = {'Content-Type': 'application/json'}
+        )
