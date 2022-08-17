@@ -16,7 +16,7 @@ def get_driver():
     from selenium.webdriver.chrome.service import Service
     from config import headless, chrome_bin, chrome_path
 
-    print('[INFO] Getting driver\n')
+    log.log('info', 'Getting driver')
 
     # Chrome webdriver options
     chrome_options = Options()
@@ -34,24 +34,22 @@ def get_driver():
     service = Service(executable_path=chrome_path)
     driver = webdriver.Chrome(service=service, options=chrome_options)
     
-    print('[SUCCESS]\n')
+    log.log('info', 'Success')
     return driver
 
 def get_title(driver):
     import os
     from selenium.webdriver.common.by import By
 
-    print('[INFO] Getting element\n')
+    log.log('info', 'Getting element')
 
     driver.implicitly_wait(5)
     driver.get(os.environ.get('scrape_website')) 
     element = driver.find_element(By.TAG_NAME, 'title')
-    print(f'[ELEMENT] {element}\n')
     title = element.text
-    print(f'[TITLE] {title}\n')
     driver.quit()
 
-    print('[SUCCESS]\n')
+    log.log('info', 'Success')
     return title
 
 # Depreciated 
@@ -81,7 +79,7 @@ def save_json(title):
     from datetime import datetime
     from config import json_file_path
 
-    print('[INFO] Saving JSON\n')
+    log.log('info', 'Saving JSON')
 
     try:
         with open(json_file_path, 'r+') as fr:
@@ -89,14 +87,16 @@ def save_json(title):
             data[ str(datetime.now()) ] = str(title)
             with open(json_file_path, 'w') as fw:
                 json.dump(data, fw)
-                print('[SUCCESS] Appended\n')
+                log.log('info', 'Written')
 
     except FileNotFoundError:
         with open(json_file_path, 'r+') as fw:
             dictionary = {}
             dictionary[ str(datetime.now()) ] = title
             json.dump(dictionary, fw)
-            print('[SUCCESS] New JSON file created\n')
+            log.log('info', 'New JSON file created')
+    
+    log.log('info', 'Success')
 
 
 def send_webhook(title):
@@ -107,7 +107,7 @@ def send_webhook(title):
     import requests
     from datetime import datetime
 
-    print('[INFO] Sending webhook\n')
+    log.log('info', 'Sending webhook')
 
     webhook_url = os.environ.get('webhook_url')
 
@@ -122,12 +122,12 @@ def send_webhook(title):
         headers     = {'Content-Type': 'application/json'}
     )
 
-    print('[SUCCESS]\n')
+    log.log('info', 'Success')
 
 
 def main():
-    log.log('info', 'testing logger')
-    print('[INFO] Launching web scraper\n')
+    log.log('info', 'Launching web scraper')
+
     try:
         driver = get_driver()
         title = get_title(driver)
@@ -135,15 +135,20 @@ def main():
         # title = parse(page_source)
         save_json(title)
         send_webhook(title)
+
     except Exception as e:
-        from config import log_file_path
-        with open(log_file_path, 'w') as fw:
-            print('[ERROR] Exception written to log\n')
-            fw.write(str(e))
+        log.log('error', '')
+        log.log('error', e)
+
+    log.log('info', 'Scrape complete')
+
+
 
 # ----
 
 if __name__ == "__main__":
+    log.log('info', 'Initializing app')
+
     import time, multiprocessing
     from config import *
     from bot import activate
@@ -155,5 +160,6 @@ if __name__ == "__main__":
     # Repeat this process every day
     while True:
         p1.start()
-        print('[INFO] Sleeping\n')
+
+        log.log('info', 'Sleeping...')  
         time.sleep(60*60)
