@@ -41,12 +41,15 @@ def get_title(driver):
     from selenium.webdriver.common.by import By
     from config import scrape_website
 
-    log.log('info', 'Getting element')
-
+    log.log('info', f'Fetching {scrape_website}')
     driver.implicitly_wait(5)
     driver.get(scrape_website) 
+
+    log.log('info', 'Fetching element:')
     element = driver.find_element(By.TAG_NAME, 'title')
     title = element.text
+    
+    log.log('info', title)
     driver.quit()
 
     log.log('info', 'Done')
@@ -135,13 +138,11 @@ def main():
         # title = parse(page_source)
         save_json(title)
         send_webhook(title)
+        log.log('info', 'Scrape complete')
 
     except Exception as e:
-        log.log('error', 'Exception raised')
+        log.log('error', 'Exception raised:')
         log.log('error', e)
-
-    log.log('info', 'Scrape complete')
-
 
 
 # ----
