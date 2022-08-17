@@ -147,11 +147,11 @@ def main():
 # ----
 
 if __name__ == "__main__":
-    log.log('info', 'Initializing app')
-
     import time, multiprocessing
     from config import *
     from bot import activate
+
+    log.log('info', 'Initializing app')
 
     p1 = multiprocessing.Process(name='p1', target=main)
     p2 = multiprocessing.Process(name='p2', target=activate)
