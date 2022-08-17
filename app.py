@@ -34,22 +34,22 @@ def get_driver():
     service = Service(executable_path=chrome_path)
     driver = webdriver.Chrome(service=service, options=chrome_options)
     
-    log.log('info', 'Success')
+    log.log('info', 'Done')
     return driver
 
 def get_title(driver):
-    import os
     from selenium.webdriver.common.by import By
+    from config import scrape_website
 
     log.log('info', 'Getting element')
 
     driver.implicitly_wait(5)
-    driver.get(os.environ.get('scrape_website')) 
+    driver.get(scrape_website) 
     element = driver.find_element(By.TAG_NAME, 'title')
     title = element.text
     driver.quit()
 
-    log.log('info', 'Success')
+    log.log('info', 'Done')
     return title
 
 # Depreciated 
@@ -96,7 +96,7 @@ def save_json(title):
             json.dump(dictionary, fw)
             log.log('info', 'New JSON file created')
     
-    log.log('info', 'Success')
+    log.log('info', 'Done')
 
 
 def send_webhook(title):
@@ -122,7 +122,7 @@ def send_webhook(title):
         headers     = {'Content-Type': 'application/json'}
     )
 
-    log.log('info', 'Success')
+    log.log('info', 'Done')
 
 
 def main():
@@ -137,7 +137,7 @@ def main():
         send_webhook(title)
 
     except Exception as e:
-        log.log('error', '')
+        log.log('error', 'Exception raised')
         log.log('error', e)
 
     log.log('info', 'Scrape complete')
