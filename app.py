@@ -41,15 +41,15 @@ def get_title(driver):
     from selenium.webdriver.common.by import By
     from config import scrape_website
 
-    log.log('info', f'Fetching {scrape_website}')
+    log.log('info', f'Fetching: {scrape_website}')
     driver.implicitly_wait(5)
     driver.get(scrape_website) 
+    log.log('info', f'Actual: {driver.current_url}')
 
-    log.log('info', 'Fetching element:')
-    element = driver.find_element(By.TAG_NAME, 'title')
-    title = element.text
+    log.log('info', 'Fetching title')
+    title = driver.title
+    log.log('info', f'Title: {title}')
     
-    log.log('info', title)
     driver.quit()
 
     log.log('info', 'Done')
