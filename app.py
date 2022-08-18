@@ -55,7 +55,7 @@ def get_title(driver):
     log.log('info', 'Fetching title')
 
     title = driver.title
-    
+
     log.log('info', f'Title: {title}')
     
     driver.implicitly_wait(5)
@@ -121,7 +121,7 @@ def send_webhook(title):
 
     log.log('info', 'Sending webhook')
 
-    webhook_url = os.environ.get('webhook_url')
+    webhook_url = os.environ.get('data_webhook_url')
 
     data = {
         'username'  : 'Web Scraper',
@@ -147,11 +147,13 @@ def main():
         # title = parse(page_source)
         save_json(title)
         send_webhook(title)
+
         log.log('info', 'Scrape complete')
 
     except Exception as e:
         log.log('error', 'Exception raised:')
         log.log('error', e)
+        continue
 
 
 # ----
