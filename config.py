@@ -18,3 +18,6 @@ chrome_path     = env.get("CHROMEDRIVER_PATH")
 
 data_webhook_url    = env.get('data_webhook_url')
 scrape_website      = env.get('scrape_website')
+
+# Bot
+bot_token = env.get('bot_token')

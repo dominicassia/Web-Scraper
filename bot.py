@@ -6,9 +6,11 @@
 
 # -- Imports
 
-import os
 import discord
 from discord.ext import commands
+
+from config import bot_token, log
+from app import main
 
 # ----
 
@@ -22,14 +24,22 @@ async def on_ready():
 
 @client.command()
 async def view(ctx, *, file_path):
-    print(f'[INFO] View: {file_path}\n')
+    log.log('bot', f'View {file_path}')
+
     try:
         await ctx.send(file=discord.File(file_path))
-        print('[SUCCESS]\n')
-    except Exception:
-        print('[Error]\n')
+        log.log('info', 'Done.')
+
+    except Exception as e:
+        log.log('error', 'Exception raised:')
+        log.log('error', e)
         pass
 
 
+@client.command()
+async def scrape(ctx, *, website):
+    log.log('bot', f'Scrape {website}')
+    main(website)
+
 def activate():
-    client.run(os.environ.get('bot_token'))
+    client.run(bot_token)

@@ -41,9 +41,8 @@ def get_driver():
     log.log('info', 'Done')
     return driver
 
-def get_title(driver):
+def get_title(driver, scrape_website):
     from selenium.webdriver.common.by import By
-    from config import scrape_website
 
     log.log('info', f'Fetching: {scrape_website}')
 
@@ -135,12 +134,12 @@ def send_webhook(title):
     log.log('info', 'Done')
 
 
-def main():
+def main(website=scrape_website):
     log.log('info', 'Launching web scraper')
 
     try:
         driver = get_driver()
-        title = get_title(driver)
+        title = get_title(driver, website)
         # page_source = get_source(driver)
         # title = parse(page_source)
         save_json(title)
@@ -151,7 +150,7 @@ def main():
     except Exception as e:
         log.log('error', 'Exception raised:')
         log.log('error', e)
-
+        pass
 
 # ----
 
@@ -159,6 +158,8 @@ if __name__ == "__main__":
     import time, multiprocessing
     from config import *
     from bot import activate
+    from config import scrape_website
+
 
     log.log('info', 'Initializing app')
 
