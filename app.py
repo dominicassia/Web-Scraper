@@ -114,14 +114,12 @@ def save_json(title):
 def send_webhook(title):
     ''' Utilizes requests to send webhook. Returns nothing. '''
 
-    import os
     import json
     import requests
     from datetime import datetime
+    from config import data_webhook_url
 
     log.log('info', 'Sending webhook')
-
-    webhook_url = os.environ.get('data_webhook_url')
 
     data = {
         'username'  : 'Web Scraper',
@@ -129,7 +127,7 @@ def send_webhook(title):
     }
 
     requests.post(
-        webhook_url, 
+        data_webhook_url, 
         data        = json.dumps(data), 
         headers     = {'Content-Type': 'application/json'}
     )
@@ -153,7 +151,6 @@ def main():
     except Exception as e:
         log.log('error', 'Exception raised:')
         log.log('error', e)
-        continue
 
 
 # ----
