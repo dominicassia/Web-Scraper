@@ -7,6 +7,8 @@
     using beautiful soup to parse the html; extracting the title.  
 '''
 
+from config import *
+
 def get_driver():
     ''' Returns a webdriver. Headless and chrome bin as specified in config var'''
 
@@ -158,7 +160,6 @@ if __name__ == "__main__":
     import time, multiprocessing
     from config import *
     from bot import activate
-    from config import scrape_website
 
 
     log.log('info', 'Initializing app')
