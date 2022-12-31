@@ -61,7 +61,7 @@ class Logger():
 # Global Components: Logger and Config classes
 ###################################
 logger = Logger()
-config = Config()
+config = Config(debug=True)
 
 ###################################
 # Primary: Web Scraper class
@@ -80,9 +80,6 @@ class WebScraper():
 
         # Get driver
         self.driver = self.__get_driver()
-
-        # Schedule
-        self.repeat = None
         
         # Start bot process
         self.bot_process.start()
@@ -160,7 +157,7 @@ class WebScraper():
         logger.log('info', 'Done')
 
 
-    def scrape_utility(self, url):
+    def __scrape_utility(self, url):
         self.log.log('info', f': {url}')
 
         self.driver.implicitly_wait(5)
@@ -185,12 +182,12 @@ class WebScraper():
 
     def scrape(self, url):
         # Create process
-        self.ws_process =  multiprocessing.Process(name='ws_process', target=self.scrape_utility, args=(url,))
+        self.ws_process =  multiprocessing.Process(name='ws_process', target=self.__scrape_utility, args=(url,))
 
         while True:
             self.ws_process.start()
             
-            if self.repeat:
+            if config.repeat:
                 logger.log('info', 'Sleeping...')  
                 time.sleep(self.repeat)
             else:
@@ -213,6 +210,7 @@ class Bot(Logger):
 async def on_ready():
     print('[INFO] Bot is ready.')
 
+
 @Bot.client.command()
 async def view(ctx, *, file_path):
     logger.log('bot', f'View {file_path}')
@@ -226,16 +224,6 @@ async def view(ctx, *, file_path):
         logger.log('error', e)
         pass
 
-@Bot.client.command()
-async def set_repeat(ctx, *, repeat):
-    logger.log('bot', f'Set repeat {repeat}')
-    try:
-        WebScraper.repeat = int(repeat)
-
-    except Exception as e:
-        logger.log('error', 'Exception raised:')
-        logger.log('error', e)
-        pass
 
 @Bot.client.command()
 async def scrape(ctx, *, website):
