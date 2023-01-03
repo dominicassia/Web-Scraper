@@ -1,7 +1,6 @@
 ###################################
 # Imports
 ###################################
-from config import config
 from datetime import datetime
 import requests
 import json
@@ -11,7 +10,7 @@ import json
 ###################################
 class Logger():
 
-    def __init__(self):
+    def __init__(self, config):
 
         self.log_fp = config.run_log_file_path
         self.webhook_url = config.run_log_webhook_url

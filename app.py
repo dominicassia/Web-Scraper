@@ -17,7 +17,7 @@ client = commands.Bot(command_prefix='>', intents=intents)
 
 ###################################
 # Application core
-###################################\
+###################################
 class App():
 
     def __init__(self):
@@ -25,17 +25,11 @@ class App():
         self.config = Config(debug=True)
 
         # Create logger object
-        self.logger = Logger()
-
-        # Create bot process
-        bot_process = multiprocessing.Process(name='bot_process', target=client.run(self.config.bot_token))
+        self.logger = Logger(self.config)
 
         # Create web scraper object
         self.ws = WebScraper(self.config, self.logger)
-
-        # Start bot process
-        bot_process.start()
-
+        
 # Instantiate
 app = App()
 
@@ -47,14 +41,13 @@ async def on_ready():
     print('[INFO] Bot is ready.')
 
 @client.command()
-async def restart():
+async def restart(ctx):
     app.logger.log('bot', f'Restarting')
-    #main()
+    app.ws = WebScraper(app.config, app.logger)
 
 @client.command()
 async def view(ctx, *, file_path):
     app.logger.log('bot', f'View {file_path}')
-
     try:
         await ctx.send(file=discord.File(file_path))
         app.logger.log('info', 'Done.')
@@ -66,5 +59,16 @@ async def view(ctx, *, file_path):
 
 @client.command()
 async def scrape(ctx, *, website):
-    app.logger.log('bot', f'Scrape {website}')
-    app.ws.scrape(website)
+    url = f'https://{website}'
+    app.logger.log('bot', f'Scrape {website} ({url})')
+    try:
+        ws_process = multiprocessing.Process(name='ws_process', target=app.ws.scrape, args=(url,))
+        ws_process.start()
+
+    except Exception as e:
+        app.logger.log('error', 'Exception raised:')
+        app.logger.log('error', e)
+        pass
+
+bot_process = multiprocessing.Process(name='bot_process', target=client.run(app.config.bot_token))
+bot_process.start()

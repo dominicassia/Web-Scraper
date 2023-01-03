@@ -84,7 +84,7 @@ class WebScraper():
         # Create JSON structure
         data = {
             'username'  : 'Web Scraper',
-            'content'   : f'[ {str(datetime.now())} ] - {payload}'
+            'content'   : f'{payload}'
         }
 
         # POST
@@ -97,38 +97,17 @@ class WebScraper():
         self.logger.log('info', 'Done')
 
 
-    def __scrape_utility(self, url):
-        self.logger.log('info', f': {url}')
+    def scrape(self, url):
+        self.logger.log('info', f'Fetching {url}')
 
         self.driver.implicitly_wait(5)
         self.driver.get(url) 
         self.driver.implicitly_wait(5)
 
-        self.logger.log('info', f'Actual: {self.driver.current_url}')
-        self.logger.log('info', 'Fetching title')
+        payload = f'{self.driver.current_url}  ::  {self.driver.title}'
 
-        title = self.driver.title
-
-        self.logger.log('info', f'Title: {title}')
-        
-        self.driver.implicitly_wait(5)
-        self.driver.quit()
-
+        self.logger.log('info', payload)
         self.logger.log('info', 'Done')
 
-        self.send_webhook(title)
-        self.save_json(title)
-
-
-    def scrape(self, url):
-        # Create process
-        self.ws_process =  multiprocessing.Process(name='ws_process', target=self.__scrape_utility, args=(url,))
-
-        while True:
-            self.ws_process.start()
-            
-            if self.config.repeat:
-                self.logger.log('info', 'Sleeping...')  
-                time.sleep(self.repeat)
-            else:
-                break
+        self.send_webhook(payload)
+        self.save_json(payload)
